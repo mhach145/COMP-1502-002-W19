@@ -23,40 +23,63 @@ public class PlayerListTest {
 	private int shots3 = 9;
 	private int ppgoals = 10;
 	private int ppassists = 11;
-
+        private enum pos{G, S}; 
+	
 	@Test
-	public void addPlayer() {
-		Player p1 = new Player(name, pos, "1", bdate, home, wt, ht, goals1, assists1, ppgoals, ppassists, shots1);
-		Player p2 = new Player(name, pos, "2", bdate, home, wt, ht, goals2, assists2, ppgoals, ppassists, shots2);
-		Player p3 = new Player(name, pos, "3", bdate, home, wt, ht, goals3, assists3, ppgoals, ppassists, shots3);
+	public void addSkater() {
+		Skater p1 = new Skater(name, pos, "1", bdate, home, wt, ht, );
+		Skater p2 = new Skater(name, pos, "2", bdate, home, wt, ht, );
+		Skater p3 = new Skater(name, pos, "3", bdate, home, wt, ht, );
+		
 		PlayerList list = new PlayerList();
 		list.addPlayer(p1);
 		list.addPlayer(p2);
 		list.addPlayer(p3);
-		assertEquals(p1, list.getPlayerByNumber("1"));
-		assertEquals(p2, list.getPlayerByNumber("2"));
-		assertEquals(p3, list.getPlayerByNumber("3"));
-		assertEquals(null, list.getPlayerByNumber("4"));
+		assertEquals(p1, list.findPlayer("1"));
+		assertEquals(p2, list.findPlayer("2"));
+		assertEquals(p3, list.findPlayer("3"));
+		assertEquals(null, list.findPlayer("4"));
+		
 	}
+	
+	
+	@Test
+	public void addGoalie()
+	{
+	   Goalie g1 = new Goalie(name, pos.G, "14", bdate );	
+	   Goalie g2 = new Goalie(name, pos.G, "21", bdate, );
+	   Goalie g3 = new Goalie(name, pos.G, "23", bdate, );
+           
+           list.addGoalie(g1);
+	   list.addGoalie(g2);
+	   list.addGoalie(g3); 
+	   assertEquals(g1, list.findPlayer("14"));
+	   assertEquals(g2, list.findPlayer("21"));
+           assertEquals(g1, list.findPlayer("23"));
+	   assertEquals(null , list.findPlayer("55"));
+	}
+	
 
 	@Test
 	public void addGoal() {
-		Player p1 = new Player(name, pos, "1", bdate, home, wt, ht, goals1, assists1, ppgoals, ppassists, shots1);
+		Skater p1 = new Skater(name, pos.S, "1", bdate, home, wt, ht, goals1, assists1, ppgoals, ppassists, shots1);
 		PlayerList list = new PlayerList();
-		list.addPlayer(p1);
+		list.addSkater(p1);
 		list.recordGoal("1");
 		assertEquals(shots1 + 1, p1.getShots());
 		assertEquals(goals1 + 1, p1.getGoals());
 		assertEquals(goals1 + 1 + assists1, p1.getPoints());
 	}
 
+	
+	
 	@Test
 	public void addGoalOneAssist() {
-		Player p1 = new Player(name, pos, "1", bdate, home, wt, ht, goals1, assists1, ppgoals, ppassists, shots1);
-		Player p2 = new Player(name, pos, "2", bdate, home, wt, ht, goals2, assists2, ppgoals, ppassists, shots2);
+		Skater p1 = new Skater(name, pos, "1", bdate, home, wt, ht, goals1, assists1, ppgoals, ppassists, shots1);
+		Skater p2 = new Skater(name, pos, "2", bdate, home, wt, ht, goals2, assists2, ppgoals, ppassists, shots2);
 		PlayerList list = new PlayerList();
-		list.addPlayer(p1);
-		list.addPlayer(p2);
+		list.addSkater(p1);
+		list.addSkater(p2);
 		list.recordGoal("1", "2");
 		assertEquals(shots1 + 1, p1.getShots());
 		assertEquals(goals1 + 1, p1.getGoals());
@@ -67,13 +90,14 @@ public class PlayerListTest {
 
 	@Test
 	public void addGoalTwoAssists() {
-		Player p1 = new Player(name, pos, "1", bdate, home, wt, ht, goals1, assists1, ppgoals, ppassists, shots1);
-		Player p2 = new Player(name, pos, "2", bdate, home, wt, ht, goals2, assists2, ppgoals, ppassists, shots2);
-		Player p3 = new Player(name, pos, "3", bdate, home, wt, ht, goals3, assists3, ppgoals, ppassists, shots3);
+		SKater s1 = new Skater(name, pos, "1", bdate, home, wt, ht, goals1, assists1, ppgoals, ppassists, shots1);
+		Skater s2 = new Skater(name, pos, "2", bdate, home, wt, ht, goals2, assists2, ppgoals, ppassists, shots2);
+		Skater s3 = new Skater(name, pos, "3", bdate, home, wt, ht, goals3, assists3, ppgoals, ppassists, shots3);
+		
 		PlayerList list = new PlayerList();
-		list.addPlayer(p1);
-		list.addPlayer(p2);
-		list.addPlayer(p3);
+		list.addSkater(p1);
+		list.addSkater(p2);
+		list.addSkater(p3);
 		list.recordGoal("1", "2", "3");
 		assertEquals(shots1 + 1, p1.getShots());
 		assertEquals(goals1 + 1, p1.getGoals());
@@ -86,13 +110,24 @@ public class PlayerListTest {
 
 ////ADDITIONAL TESTS for PlayerList
 	@Test
-	public void getPlayers() {
-		Player p1 = new Player(name, pos, "1", bdate, home, wt, ht, goals1, assists1, ppgoals, ppassists, shots1);
+	public void getSkaters() 
+	{
+		Skater s1 = new Skater(name, pos, "1", bdate, home, wt, ht, goals1, assists1, ppgoals, ppassists, shots1);
 		PlayerList list = new PlayerList();
-		list.addPlayer(p1);
-		ArrayList<Player> temp = new ArrayList<>();
+		list.addSkater(s1);
+		ArrayList<Skater> temp = new ArrayList<>();
 		temp.add(p1);
-		assertEquals(temp, list.getPlayers());
+		assertEquals(temp, list.getSkaters());
+	}
+	
+	public void getGoalies()
+	{
+	       Goalie g1 = new Goalie(name, pos, "1", bdate, home, wt, ht, goals1, assists1, ppgoals, ppassists, shots1);
+		PlayerList list = new PlayerList();
+		list.addGoalie(g1);
+		ArrayList<Goalie> temp = new ArrayList<>();
+		temp.add(p1);
+		assertEquals(temp, list.getGoalies());
 	}
 
 	@Test
